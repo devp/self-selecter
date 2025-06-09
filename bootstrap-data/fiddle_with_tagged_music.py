@@ -5,6 +5,7 @@ Commands:
 1. add <url> [tags] - Add a URL with optional tags
 2. list [--limit N] [--recent] [--untagged] - List content with options
 3. tag <id> <tags> - Add tags to an entry by ID
+4. play <id> - Open the appropriate YouTube Music URL for the given content ID
 """
 
 import os
@@ -147,6 +148,42 @@ def add_tags(db_path: str, id: int, tags: str) -> None:
     conn.commit()
     print(f"Updated tags for ID {id}")
 
+def get_youtube_music_url(content_type: str, youtube_id: str) -> str:
+    """Construct the appropriate YouTube Music URL based on content type and ID."""
+    base_url = "https://music.youtube.com"
+    
+    if content_type == "ARTIST":
+        return f"{base_url}/channel/{youtube_id}"
+    elif content_type == "SONG":
+        return f"{base_url}/watch?v={youtube_id}"
+    else:  # ALBUM or PLAYLIST
+        return f"{base_url}/playlist?list={youtube_id}"
+
+def play_content(db_path: str, id: int) -> None:
+    """Open the appropriate YouTube Music URL for the given content ID."""
+    conn = get_db_connection(db_path)
+    cursor = conn.cursor()
+    
+    # Get content type and YouTube ID
+    cursor.execute("SELECT type, youtube_id FROM music_content WHERE id = ?", (id,))
+    result = cursor.fetchone()
+    
+    if not result:
+        print(f"Error: No entry found with ID {id}")
+        return
+        
+    content_type, youtube_id = result
+    url = get_youtube_music_url(content_type, youtube_id)
+    
+    # Open URL in default browser
+    try:
+        import webbrowser
+        webbrowser.open(url)
+        print(f"Opening {url}")
+    except Exception as e:
+        print(f"Error opening URL: {e}")
+        print(f"Please visit: {url}")
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -197,6 +234,17 @@ def main():
             id = int(sys.argv[2])
             tags = sys.argv[3]
             add_tags(db_path, id, tags)
+        except ValueError:
+            print("Error: ID must be a number")
+            sys.exit(1)
+            
+    elif command == "play":
+        if len(sys.argv) < 3:
+            print("Usage: python fiddle_with_tagged_music.py play <id>")
+            sys.exit(1)
+        try:
+            id = int(sys.argv[2])
+            play_content(db_path, id)
         except ValueError:
             print("Error: ID must be a number")
             sys.exit(1)
