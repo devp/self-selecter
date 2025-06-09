@@ -5,8 +5,18 @@ visual, and fun interface.
 
 ## Setup
 
-1. Serve static web pages from `src/`.
-   e.g. `cd src; python -m http.server`
+1. Serve static web pages from `src/`. e.g. `cd src; python -m http.server`
+
+## The Plan...
+
+- 2025-06-08: In `bootstrap-data`, create some ad-hoc generated CLI scripts with
+  the idea and manually modifying and curating music with tags. (The YouTube
+  corpus is lacking in useful tags, ultimately.) Though this isn't the ideal UI,
+  I want to set up a fruitful interaction between curated tags and using the
+  tags to self-select music.
+
+- next: add support for Bandcamp, and standalone URLs (which will lack metadata,
+  e.g. WBGO radio)
 
 # About
 
