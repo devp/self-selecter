@@ -3,6 +3,13 @@
 A web app for music lovers to curate their own musical catalog with a quirky,
 visual, and fun interface.
 
+## Setup
+
+1. Serve static web pages from `src/`.
+   e.g. `cd src; python -m http.server`
+
+# About
+
 ## Goals
 
 - Create a fast, simple interface for music discovery and curation
