@@ -15,8 +15,11 @@ visual, and fun interface.
   I want to set up a fruitful interaction between curated tags and using the
   tags to self-select music.
 
-- next: add support for Bandcamp, and standalone URLs (which will lack metadata,
-  e.g. WBGO radio)
+- next: add support for Bandcamp, and standalone URLs (which will lack metadata, e.g. radio station websites); add album art as much as possible; play counts and last selected in db; list common and incoming tags
+
+- next: fennel repl to build fancy curation algorithms, guides by the existing tags
+
+- idea: self hosting friendly for 1 person or small cluster of people; default to sharing content cheaply and visiting other people's collections; but still not social web
 
 # About
 
