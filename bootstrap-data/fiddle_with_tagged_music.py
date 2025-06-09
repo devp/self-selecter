@@ -118,35 +118,38 @@ def list_content(db_path: str, limit: int = 20, recent: bool = False, untagged: 
         id, type, name, artist, tags, created = row
         print(f"{id} | {type} | {name} | {artist or 'N/A'} | {tags or 'N/A'} | {created}")
 
-def add_tags(db_path: str, id: int, tags: str) -> None:
-    """Add tags to an entry by ID."""
+def add_tags(db_path: str, ids: List[int], tags: str) -> None:
+    """Add tags to entries by IDs."""
     conn = get_db_connection(db_path)
     cursor = conn.cursor()
     
-    # Get current tags
-    cursor.execute("SELECT raw_tags FROM music_content WHERE id = ?", (id,))
-    result = cursor.fetchone()
+    # Get current tags for all IDs
+    placeholders = ','.join('?' * len(ids))
+    cursor.execute(f"SELECT id, raw_tags FROM music_content WHERE id IN ({placeholders})", ids)
+    results = cursor.fetchall()
     
-    if not result:
-        print(f"Error: No entry found with ID {id}")
+    if not results:
+        print(f"Error: No entries found with IDs {ids}")
         return
+    
+    # Process each entry
+    for id, current_tags in results:
+        current_tag_list = [tag.strip() for tag in current_tags.split(',')] if current_tags else []
         
-    current_tags = result[0] or ""
-    current_tag_list = [tag.strip() for tag in current_tags.split(',')] if current_tags else []
-    
-    # Add new tags
-    new_tags = [tag.strip() for tag in tags.split(',')]
-    all_tags = list(set(current_tag_list + new_tags))  # Remove duplicates
-    
-    # Update the database
-    cursor.execute("""
-        UPDATE music_content 
-        SET raw_tags = ?, updated_at = CURRENT_TIMESTAMP
-        WHERE id = ?
-    """, (','.join(all_tags), id))
+        # Add new tags
+        new_tags = [tag.strip() for tag in tags.split(',')]
+        all_tags = list(set(current_tag_list + new_tags))  # Remove duplicates
+        
+        # Update the database
+        cursor.execute("""
+            UPDATE music_content 
+            SET raw_tags = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+        """, (','.join(all_tags), id))
+        
+        print(f"Updated tags for ID {id}")
     
     conn.commit()
-    print(f"Updated tags for ID {id}")
 
 def get_youtube_music_url(content_type: str, youtube_id: str) -> str:
     """Construct the appropriate YouTube Music URL based on content type and ID."""
@@ -228,14 +231,15 @@ def main():
         
     elif command == "tag":
         if len(sys.argv) < 4:
-            print("Usage: python fiddle_with_tagged_music.py tag <id> <tags>")
+            print("Usage: python fiddle_with_tagged_music.py tag <id1,id2,...> <tags>")
             sys.exit(1)
         try:
-            id = int(sys.argv[2])
+            # Parse comma-separated IDs
+            ids = [int(id.strip()) for id in sys.argv[2].split(',')]
             tags = sys.argv[3]
-            add_tags(db_path, id, tags)
+            add_tags(db_path, ids, tags)
         except ValueError:
-            print("Error: ID must be a number")
+            print("Error: IDs must be numbers")
             sys.exit(1)
             
     elif command == "play":
