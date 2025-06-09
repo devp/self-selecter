@@ -30,6 +30,12 @@ def clean_artist_name(name: str) -> str:
     # Remove " - Topic" suffix
     return name.replace(" - Topic", "").strip()
 
+def cap_description(description: str) -> str:
+    """Cap description at 80 characters."""
+    if not description:
+        return description
+    return description[:80]
+
 def extract_video_id(url: str) -> Optional[str]:
     """Extract video ID from various YouTube URL formats."""
     # Handle youtu.be URLs
@@ -165,7 +171,7 @@ def get_video_metadata(youtube, video_id: str) -> Dict[str, Any]:
             "name": snippet['title'],
             "artist_name": clean_artist_name(snippet.get('channelTitle')),
             "youtube_id": video_id,
-            "description": snippet.get('description'),
+            "description": cap_description(snippet.get('description')),
             "tags": cleaned_tags
         }
     except HttpError as e:
@@ -267,7 +273,7 @@ def get_playlist_metadata(youtube, playlist_id: str) -> Dict[str, Any]:
             "name": name,
             "artist_name": clean_artist_name(artist_name or snippet.get('channelTitle')),
             "youtube_id": playlist_id,
-            "description": snippet.get('description'),
+            "description": cap_description(snippet.get('description')),
             "tags": cleaned_tags
         }
     except HttpError as e:
@@ -312,7 +318,7 @@ def get_artist_metadata(youtube, channel_id: str) -> Dict[str, Any]:
             "type": "Artist",
             "name": artist_name,
             "youtube_id": channel_id,
-            "description": snippet.get('description'),
+            "description": cap_description(snippet.get('description')),
             "tags": cleaned_tags
         }
     except HttpError as e:
