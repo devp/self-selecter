@@ -40,11 +40,12 @@ def generate_insert_statements(data: Dict[str, Any]) -> List[str]:
         youtube_id = metadata["youtube_id"]
         name = metadata["name"].replace("'", "''")  # Escape single quotes
         artist_name = metadata.get("artist_name", "").replace("'", "''") if metadata.get("artist_name") else None
-        # for now: ignore description
+        # for now: ignore description and raw tags, the quality is too low.
         # description = metadata.get("description", "").replace("'", "''") if metadata.get("description") else None
+        # raw_tags = clean_tags(metadata.get("tags", []))
         description = None
-        raw_tags = clean_tags(metadata.get("tags", []))
-        
+        raw_tags = None
+
         # Create the insert statement
         statement = f"""INSERT INTO music_content 
             (type, youtube_id, name, artist_name, description, raw_tags)
