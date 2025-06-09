@@ -1,2 +1,4 @@
 .vscode/
 venv/
+bootstrap-data/*.sqlite
+bootstrap-data/*.db
