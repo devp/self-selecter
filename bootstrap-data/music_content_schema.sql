@@ -1,4 +1,4 @@
-CREATE TABLE music_content (
+CREATE TABLE IF NOT EXISTS music_content (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     type TEXT NOT NULL CHECK (type IN ('ALBUM', 'PLAYLIST', 'SONG', 'ARTIST')),
     youtube_id TEXT NOT NULL UNIQUE,
@@ -11,4 +11,4 @@ CREATE TABLE music_content (
 );
 
 -- Create an index on type for filtering by content type
-CREATE INDEX idx_music_content_created_at ON music_content(created_at);
+CREATE INDEX IF NOT EXISTS idx_music_content_created_at ON music_content(created_at);

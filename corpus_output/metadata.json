@@ -1,0 +1,34 @@
+[
+    {
+        "title": "song3",
+        "artist": "Unknown Artist",
+        "album": "Unknown Album",
+        "genre": "Unknown Genre",
+        "file_path": "music_data/song3.midi",
+        "duration_seconds": 256
+    },
+    {
+        "title": "song1",
+        "artist": "Unknown Artist",
+        "album": "Unknown Album",
+        "genre": "Unknown Genre",
+        "file_path": "music_data/song1.mid",
+        "duration_seconds": 153
+    },
+    {
+        "title": "song2",
+        "artist": "Unknown Artist",
+        "album": "Unknown Album",
+        "genre": "Unknown Genre",
+        "file_path": "music_data/song2.abc",
+        "duration_seconds": 94
+    },
+    {
+        "title": "beethoven_symphony_5",
+        "artist": "Unknown Artist",
+        "album": "Unknown Album",
+        "genre": "Unknown Genre",
+        "file_path": "music_data/classical/beethoven_symphony_5.mid",
+        "duration_seconds": 171
+    }
+]

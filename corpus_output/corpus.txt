@@ -1,0 +1,13 @@
+Processed content of song3.midi
+
+<|endofsong|>
+
+Processed content of song1.mid
+
+<|endofsong|>
+
+Processed content of song2.abc
+
+<|endofsong|>
+
+Processed content of beethoven_symphony_5.mid

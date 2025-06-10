@@ -1,0 +1,10 @@
+Starting music corpus build...
+Found 4 music files.
+Successfully processed music_data/song3.midi
+Successfully processed music_data/song1.mid
+Successfully processed music_data/song2.abc
+Successfully processed music_data/classical/beethoven_symphony_5.mid
+Metadata saved to corpus_output/metadata.json
+Corpus content saved to corpus_output/corpus.txt
+Processed 4 songs into the corpus.
+Music corpus build completed.
