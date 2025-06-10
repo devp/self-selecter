@@ -1,0 +1,315 @@
+;; Music Data Representations for Homoiconic Languages (suggestions)
+;; generated: Claude
+
+;; ============================================================================
+;; CLOJURE EDN (Extensible Data Notation) - The Gold Standard
+;; ============================================================================
+
+;; Single track as EDN map
+{:id 1
+ :type :song
+ :youtube-id "dQw4w9WgXcQ"
+ :name "Never Gonna Give You Up"
+ :artist-name "Rick Astley"
+ :description "Classic 80s pop hit"
+ :raw-tags "80s pop classic rickroll"
+ :created-at #inst "2024-01-15T10:30:00Z"
+ :updated-at #inst "2024-01-15T10:30:00Z"}
+
+;; Collection of tracks as EDN vector
+[{:id 1
+  :type :song
+  :youtube-id "dQw4w9WgXcQ"
+  :name "Never Gonna Give You Up"
+  :artist-name "Rick Astley"
+  :raw-tags "80s pop classic"}
+ 
+ {:id 2
+  :type :album
+  :youtube-id "PLxyz123"
+  :name "Whenever You Need Somebody"
+  :artist-name "Rick Astley"
+  :raw-tags "80s album pop"}]
+
+;; ============================================================================
+;; FENNEL - Clojure-style with Lua syntax
+;; ============================================================================
+
+;; Single track in Fennel
+{:id 1
+ :type :song
+ :youtube-id "dQw4w9WgXcQ"
+ :name "Never Gonna Give You Up"
+ :artist-name "Rick Astley"
+ :description "Classic 80s pop hit"
+ :raw-tags "80s pop classic rickroll"
+ :created-at "2024-01-15T10:30:00Z"
+ :updated-at "2024-01-15T10:30:00Z"}
+
+;; Collection as Fennel sequence
+[{:id 1
+  :type :song
+  :youtube-id "dQw4w9WgXcQ"
+  :name "Never Gonna Give You Up"
+  :artist-name "Rick Astley"}
+ 
+ {:id 2
+  :type :album
+  :youtube-id "PLxyz123"
+  :name "Whenever You Need Somebody"
+  :artist-name "Rick Astley"}]
+
+;; Alternative Fennel syntax (more Lua-like)
+[{:id 1 
+  :type "SONG"
+  :youtube_id "dQw4w9WgXcQ"
+  :name "Never Gonna Give You Up"
+  :artist_name "Rick Astley"}]
+
+;; ============================================================================
+;; LUA TABLES - Native Lua representation
+;; ============================================================================
+
+-- Single track as Lua table
+{
+  id = 1,
+  type = "SONG",
+  youtube_id = "dQw4w9WgXcQ",
+  name = "Never Gonna Give You Up",
+  artist_name = "Rick Astley",
+  description = "Classic 80s pop hit",
+  raw_tags = "80s pop classic rickroll",
+  created_at = "2024-01-15T10:30:00Z",
+  updated_at = "2024-01-15T10:30:00Z"
+}
+
+-- Collection as Lua array of tables
+{
+  {
+    id = 1,
+    type = "SONG",
+    youtube_id = "dQw4w9WgXcQ",
+    name = "Never Gonna Give You Up",
+    artist_name = "Rick Astley",
+    raw_tags = "80s pop classic"
+  },
+  {
+    id = 2,
+    type = "ALBUM", 
+    youtube_id = "PLxyz123",
+    name = "Whenever You Need Somebody",
+    artist_name = "Rick Astley",
+    raw_tags = "80s album pop"
+  }
+}
+
+;; ============================================================================
+;; COMMON LISP S-EXPRESSIONS
+;; ============================================================================
+
+;; Single track as property list (plist)
+(:id 1
+ :type :song
+ :youtube-id "dQw4w9WgXcQ"
+ :name "Never Gonna Give You Up"
+ :artist-name "Rick Astley"
+ :description "Classic 80s pop hit"
+ :raw-tags "80s pop classic rickroll")
+
+;; Single track as association list (alist)
+((id . 1)
+ (type . song)
+ (youtube-id . "dQw4w9WgXcQ")
+ (name . "Never Gonna Give You Up")
+ (artist-name . "Rick Astley")
+ (raw-tags . "80s pop classic rickroll"))
+
+;; Collection as list of plists
+((:id 1 :type :song :name "Never Gonna Give You Up" :artist-name "Rick Astley")
+ (:id 2 :type :album :name "Whenever You Need Somebody" :artist-name "Rick Astley"))
+
+;; ============================================================================
+;; FENNEL REPL USAGE EXAMPLES
+;; ============================================================================
+
+;; Define some sample data in Fennel REPL
+(local music-data 
+  [{:id 1 :type :song :name "Song 1" :artist-name "Artist A" :raw-tags "rock energetic"}
+   {:id 2 :type :song :name "Song 2" :artist-name "Artist B" :raw-tags "chill ambient"}
+   {:id 3 :type :song :name "Song 3" :artist-name "Artist A" :raw-tags "rock metal"}])
+
+;; Filter functions
+(fn filter-by-artist [tracks artist]
+  (icollect [_ track (ipairs tracks)]
+    (when (= track.artist-name artist) track)))
+
+(fn filter-by-tag [tracks tag]
+  (icollect [_ track (ipairs tracks)]
+    (when (string.find track.raw-tags tag) track)))
+
+;; Usage in REPL:
+;; > (filter-by-artist music-data "Artist A")
+;; [{:id 1 :type :song :name "Song 1" :artist-name "Artist A" :raw-tags "rock energetic"}
+;;  {:id 3 :type :song :name "Song 3" :artist-name "Artist A" :raw-tags "rock metal"}]
+
+;; > (filter-by-tag music-data "rock")
+;; [{:id 1 :type :song :name "Song 1" :artist-name "Artist A" :raw-tags "rock energetic"}
+;;  {:id 3 :type :song :name "Song 3" :artist-name "Artist A" :raw-tags "rock metal"}]
+
+;; ============================================================================
+;; ADVANCED FENNEL DATA MANIPULATION
+;; ============================================================================
+
+;; Sorting and transformation
+(fn sort-by-name [tracks]
+  (let [sorted (icollect [_ track (ipairs tracks)] track)]
+    (table.sort sorted (fn [a b] (< a.name b.name)))
+    sorted))
+
+;; Complex filtering with multiple criteria
+(fn complex-filter [tracks]
+  (->> tracks
+       (icollect [_ track (ipairs tracks)]
+         (when (and (= track.type :song)
+                    (string.find track.raw-tags "rock"))
+           track))
+       (sort-by-name)))
+
+;; Map transformation
+(fn extract-artists [tracks]
+  (icollect [_ track (ipairs tracks)]
+    track.artist-name))
+
+;; Group by artist
+(fn group-by-artist [tracks]
+  (let [groups {}]
+    (each [_ track (ipairs tracks)]
+      (let [artist track.artist-name]
+        (when (not (. groups artist))
+          (tset groups artist []))
+        (table.insert (. groups artist) track)))
+    groups))
+
+;; ============================================================================
+;; JSON INTEROP FOR DATA EXCHANGE
+;; ============================================================================
+
+;; Converting between Fennel data and JSON strings
+(local json (require :json))
+
+;; Fennel to JSON
+(fn tracks-to-json [tracks]
+  (json.encode tracks))
+
+;; JSON to Fennel
+(fn json-to-tracks [json-string]
+  (json.decode json-string))
+
+;; Example usage:
+;; (local json-data (tracks-to-json music-data))
+;; (local restored-data (json-to-tracks json-data))
+
+;; ============================================================================
+;; DATABASE RESULT CONVERSION PATTERNS
+;; ============================================================================
+
+;; Convert SQL result to Fennel-friendly format
+(fn sql-row-to-track [row]
+  {:id row.id
+   :type (string.lower row.type)
+   :youtube-id row.youtube_id
+   :name row.name
+   :artist-name row.artist_name
+   :description row.description
+   :raw-tags row.raw_tags
+   :created-at row.created_at
+   :updated-at row.updated_at
+   ;; Derived fields
+   :tags (icollect [tag (string.gmatch row.raw_tags "%S+")]
+           (string.lower tag))})
+
+;; Convert multiple SQL rows
+(fn sql-results-to-tracks [sql-results]
+  (icollect [_ row (ipairs sql-results)]
+    (sql-row-to-track row)))
+
+;; ============================================================================
+;; FENNEL REPL HELPER FUNCTIONS
+;; ============================================================================
+
+;; Pretty print tracks
+(fn pp-tracks [tracks]
+  (each [i track (ipairs tracks)]
+    (print (string.format "%d. %s by %s [%s]"
+                         i track.name track.artist-name 
+                         (or track.raw-tags "no tags")))))
+
+;; Quick stats
+(fn track-stats [tracks]
+  (let [stats {:total (length tracks)
+               :songs 0
+               :albums 0
+               :playlists 0
+               :artists 0}
+        artist-set {}]
+    (each [_ track (ipairs tracks)]
+      (match track.type
+        :song (set stats.songs (+ stats.songs 1))
+        :album (set stats.albums (+ stats.albums 1))
+        :playlist (set stats.playlists (+ stats.playlists 1)))
+      (tset artist-set track.artist-name true))
+    
+    (set stats.artists (length (icollect [artist _ (pairs artist-set)] artist)))
+    stats))
+
+;; Usage: (pp-tracks (filter-by-tag music-data "rock"))
+;;        (track-stats music-data)
+
+;; ============================================================================
+;; EDN-STYLE SERIALIZATION FOR FENNEL
+;; ============================================================================
+
+;; Custom EDN-like serialization for Fennel data
+(fn serialize-track [track]
+  (string.format 
+    "{:id %d :type :%s :name %q :artist-name %q :raw-tags %q}"
+    track.id 
+    track.type
+    track.name
+    track.artist-name
+    (or track.raw-tags "")))
+
+(fn serialize-tracks [tracks]
+  (let [serialized (icollect [_ track (ipairs tracks)]
+                     (serialize-track track))]
+    (string.format "[%s]" (table.concat serialized "\n "))))
+
+;; ============================================================================
+;; EXAMPLE FENNEL REPL SESSION
+;; ============================================================================
+
+;; Load data from your main application:
+;; fennel> (local tracks (load-tracks-from-db {:limit 100}))
+
+;; Explore the data:
+;; fennel> (length tracks)
+;; 100
+
+;; fennel> (pp-tracks (take 5 tracks))
+;; 1. Never Gonna Give You Up by Rick Astley [80s pop classic]
+;; 2. Bohemian Rhapsody by Queen [rock opera classic]
+;; 3. Billie Jean by Michael Jackson [pop 80s dance]
+;; 4. Sweet Child O' Mine by Guns N' Roses [rock classic metal]
+;; 5. Hotel California by Eagles [rock classic 70s]
+
+;; fennel> (track-stats tracks)
+;; {:total 100 :songs 85 :albums 10 :playlists 5 :artists 42}
+
+;; Find music:
+;; fennel> (def rock-tracks (filter-by-tag tracks "rock"))
+;; fennel> (def sorted-rock (sort-by-name rock-tracks))
+;; fennel> (pp-tracks (take 3 sorted-rock))
+
+;; Save results:
+;; fennel> (def my-playlist (take 20 sorted-rock))
+;; fennel> (save-playlist my-playlist "My Rock Mix")
